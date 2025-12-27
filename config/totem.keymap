@@ -11,10 +11,11 @@
 // ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
 
 #include <behaviors.dtsi>
-#include <dt-bindings/zmk/backlight.h>
-#include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/behaviors.h>
 #include <behaviors/num_word.dtsi>
+
 
 #define slashP &th LS(SLASH) P
 #define HYPEReturn &tb LS(LC(LA(LGUI))) RETURN
@@ -161,7 +162,7 @@
         base {
             bindings = <
         &tb_B  &kp L         &kp D            &HML LGUI W    &kp Z        &kp SQT     &HMR RGUI F  &kp O            &kp U         &kp J
-        &kp N  &HML LCTRL R  &HML LEFT_ALT T  &lt 4 S        &kp G        &kp Y       &lt 4 H      &HMR LEFT_ALT A  &HMR LCTRL E  &kp I
+        &lt 5 N  &HML LCTRL R  &HML LEFT_ALT T  &lt 4 S        &kp G        &kp Y       &lt 4 H      &HMR LEFT_ALT A  &HMR LCTRL E  &lt 5 I
 &tog 3  &kp Q  &kp X         &kp M            &kp C          &kp V        &kp K       slashP        &kp PERIOD       &kp MINUS     &kp FSLH  &kp COMMA
                              &num_word 1            &kp BACKSPACE  &kp LSHFT    HYPEReturn MehSpace    &mo 5
             >;
