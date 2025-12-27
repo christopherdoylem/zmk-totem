@@ -210,7 +210,7 @@
 
         raise {
             bindings = <
-        &trans   &trans  &trans     &trans     &bl BL_TOG    &kp F12  &kp F7  &kp F8  &kp F9  &kp TILDE
+        &trans   &trans  &trans     &trans     &trans    &kp F12  &kp F7  &kp F8  &kp F9  &kp TILDE
         &kp ESC  &trans  &kp MINUS  &kp EQUAL  &trans        &kp F11  &kp F4  &kp F5  &kp F6  &kp BSLH
 &trans  &trans   &trans  &kp UNDER  &kp PLUS   &trans        &kp F10  &kp F1  &kp F2  &kp F3  &kp PIPE   &kp GRAVE
                          &trans     &trans     &trans        &trans   &trans  &trans
