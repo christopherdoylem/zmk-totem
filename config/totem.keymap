@@ -27,11 +27,8 @@
 #define slashP &th LS(SLASH) P
 #define HYPEReturn &tb LS(LC(LA(LGUI))) RETURN
 #define MehSpace &tb LS(LC(LALT)) SPACE
-#define SIMPLE_MORPH(NAME, MOD, BINDING1, BINDING2)                            \
-  ZMK_MOD_MORPH(NAME, mods = <(MOD_L##MOD | MOD_R##MOD)>;                      \
-                bindings = <BINDING1>, <BINDING2>;)
 
-// Combos //
+// Combos//
 / {
     combos {
         compatible = "zmk,combos";
@@ -159,18 +156,52 @@
             tapping-term-ms = <200>;
         };
 
-        SIMPLE_MORPH(angle_morph, SFT, &kp LT, &kp GT);
-        SIMPLE_MORPH(GamRT, SFT, &kp R, &kp T);
-        SIMPLE_MORPH(GamFG, SFT, &kp F, &kp G);
-        SIMPLE_MORPH(GamVB, SFT, &kp V, &kp B);
-        SIMPLE_MORPH(GamEI, SFT, &kp E, &kp I);
+        angle_morph: angle_morph {
+            compatible = "zmk,behavior-mod-morph";
+            label = "angle_morph";
+            #binding-cells = <0>;
+            bindings = <&kp LT>, <&kp GT>;
+            mods = <(MOD_LSFT | MOD_RSFT)>;
+        };
+
+        GamRT: GamRT {
+            compatible = "zmk,behavior-mod-morph";
+            label = "GamRT";
+            #binding-cells = <0>;
+            bindings = <&kp R>, <&kp T>;
+            mods = <(MOD_LSFT | MOD_RSFT)>;
+        };
+
+        GamFG: GamFG {
+            compatible = "zmk,behavior-mod-morph";
+            label = "GamFG";
+            #binding-cells = <0>;
+            bindings = <&kp F>, <&kp G>;
+            mods = <(MOD_LSFT | MOD_RSFT)>;
+        };
+
+        GamVB: GamVB {
+            compatible = "zmk,behavior-mod-morph";
+            label = "GamVB";
+            #binding-cells = <0>;
+            bindings = <&kp V>, <&kp B>;
+            mods = <(MOD_LSFT | MOD_RSFT)>;
+        };
+
+        GamEI: GamEI {
+            compatible = "zmk,behavior-mod-morph";
+            label = "GamEI";
+            #binding-cells = <0>;
+            bindings = <&kp E>, <&kp I>;
+            mods = <(MOD_LSFT | MOD_RSFT)>;
+        };
         
     };
 
     keymap {
         compatible = "zmk,keymap";
 
-        Base {
+        BASE {
             display-name = "Base";
             bindings = <
             //              ╭───────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
@@ -186,7 +217,7 @@
         };
 
 
-        Lower {
+        LOWER {
             display-name = "Lower";
             bindings = <
             //              ╭───────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
@@ -201,7 +232,7 @@
             >;
         };
 
-        Raise {
+        RAISE {
             display-name = "Raise";
             bindings = <
             //              ╭───────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
@@ -216,7 +247,7 @@
             >;
         };
 
-        Nav {
+        NAV {
             display-name = "Nav";
             bindings = <
             //              ╭───────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
@@ -231,7 +262,7 @@
             >;
         };
 
-        Gaming {
+        GAMING {
             display-name = "Gaming";
             bindings = <
             //              ╭───────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
