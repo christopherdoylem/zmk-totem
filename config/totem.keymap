@@ -161,11 +161,11 @@
             tapping-term-ms = <200>;
         };
 
-        SIMPLE_MORPH(angle_morph, SFT, &kp LT, &kp GT)
-        SIMPLE_MORPH(GamRT, SFT, &kp R, &kp T)
-        SIMPLE_MORPH(GamFG, SFT, &kp F, &kp G)
-        SIMPLE_MORPH(GamVB, SFT, &kp V, &kp B)
-        SIMPLE_MORPH(GamEI, SFT, &kp E, &kp I)
+        SIMPLE_MORPH(angle_morph, SFT, &kp LT, &kp GT);
+        SIMPLE_MORPH(GamRT, SFT, &kp R, &kp T);
+        SIMPLE_MORPH(GamFG, SFT, &kp F, &kp G);
+        SIMPLE_MORPH(GamVB, SFT, &kp V, &kp B);
+        SIMPLE_MORPH(GamEI, SFT, &kp E, &kp I);
         
     };
 
