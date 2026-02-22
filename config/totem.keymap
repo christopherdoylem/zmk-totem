@@ -36,61 +36,61 @@
         compatible = "zmk,combos";
 
         combo_enter {
-            timeout-ms = <50>;
+            timeout-ms = <40>;
             bindings = <&kp RETURN>;
             key-positions = <16 17 18>;
         };
 
         ctrl-backspace {
-            timeout-ms = <50>;
+            timeout-ms = <40>;
             bindings = <&kp LC(BACKSPACE)>;
             key-positions = <27 28 29>;
         };
 
         left-parenthesis {
-            timeout-ms = <50>;
+            timeout-ms = <40>;
             bindings = <&kp LEFT_PARENTHESIS>;
             key-positions = <6 7>;
         };
 
         right-parenthesis {
-            timeout-ms = <50>;
+            timeout-ms = <40>;
             bindings = <&kp RIGHT_PARENTHESIS>;
             key-positions = <7 8>;
         };
 
         left-bracket {
-            timeout-ms = <50>;
+            timeout-ms = <40>;
             bindings = <&kp LEFT_BRACKET>;
             key-positions = <16 17>;
         };
 
         right-bracket {
-            timeout-ms = <50>;
+            timeout-ms = <40>;
             bindings = <&kp RIGHT_BRACKET>;
             key-positions = <17 18>;
         };
 
         left-brace {
-            timeout-ms = <50>;
+            timeout-ms = <40>;
             bindings = <&kp LEFT_BRACE>;
             key-positions = <27 28>;
         };
 
         right-brace {
-            timeout-ms = <50>;
+            timeout-ms = <40>;
             bindings = <&kp RIGHT_BRACE>;
             key-positions = <28 29>;
         };
 
         combo_colon {
-            timeout-ms = <50>;
+            timeout-ms = <40>;
             bindings = <&kp SEMI>;
             key-positions = <18 19>;
         };
 
         combo_angle {
-            timeout-ms = <50>;
+            timeout-ms = <40>;
             bindings = <&angle_morph>;
             key-positions = <16 18>;
         };
@@ -236,13 +236,13 @@
             display-name = "Base";
             bindings = <
             //              ╭───────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
-                              &tb_B           &kp L         &kp D         &HML LGUI W   &kp Z           &kp SQT       &HMR LGUI F   &kp O         &kp U         &kp J
+                              &kp B           &kp L         &kp D         &HML LGUI W   &kp Z           &kp SQT       &HMR LGUI F   &kp O         &kp U         &kp J
             //              ├───────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
                               &lt 2 N         &HML LCTRL R  &HML LALT T   &lt 3 S       &kp G           &kp Y         &lt 3 H       &HMR LALT A   &HMR LCTRL E  &lt 2 I
             //╭─────────────┬───────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┬─────────────╮
                 &tog 4        &kp Q           &kp X         &kp M         &kp C         &kp V           &kp K         slashP        &kp DOT       &kp MINUS     &kp SLASH     &kp COMMA
             //╰─────────────┬───────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┴─────────────┴─────────────┴─────────────╯
-                                                            &mo 1         BackVim       &kp LSHFT       HYPEReturn    MehSpace      &mo 2
+                                                            &mo 1         &kp BACKSPACE &kp LSHFT       HYPEReturn    MehSpace      &mo 2
                 //                                        ╰─────────────┴─────────────┴─────────────╯ ╰─────────────┴─────────────┴─────────────╯
             >;
         };
@@ -282,11 +282,11 @@
             display-name = "Nav";
             bindings = <
             //              ╭───────────────┬─────────────┬─────────────┬─────────────┬─────────────╮ ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮
-                              ______          &kp LC(TAB)   &kp DELETE    &kp C_MUTE    &bt BT_NXT      ______        &kp LC(C)     &kp UP        &kp LC(V)     ______
+                              ______          &kp LGUI(TAB) &kp DELETE    &kp C_MUTE    &bt BT_NXT      ______        &kp LGUI(C)   &kp UP        &kp LGUI(V)     ______
             //              ├───────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-                              &kp ESCAPE      &kp TAB       ______        &kp C_VOL_UP  &bt BT_CLR      &kp LEFT      &kp DOWN      &kp UP        &kp RIGHT     &kp LC(EQUAL)
+                              &kp ESCAPE      &kp TAB       ______        &kp C_VOL_UP  &bt BT_CLR      &kp LEFT      &kp DOWN      &kp UP        &kp RIGHT     &kp LGUI(EQUAL)
             //╭─────────────┬───────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┬─────────────╮
-                ______        ______          ______        ______        &kp C_VOL_DN  ______          ______        &kp PG_UP     &kp CAPSLOCK  &kp PG_DN     &kp LC(MINUS)  ______
+                ______        ______          ______        ______        &kp C_VOL_DN  ______          ______        &kp PG_UP     &kp CAPSLOCK  &kp PG_DN     &kp LGUI(MINUS)  ______
             //╰─────────────┬───────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┴─────────────┴─────────────┴─────────────╯             
                                                             ______        ______        ______          ______        ______        ______
             //                                            ╰─────────────┴─────────────┴─────────────╯ ╰─────────────┴─────────────┴─────────────╯
@@ -316,7 +316,7 @@
             //              ├───────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
                               &kp LC(LEFT)    ______        ______        ______        ______          &vim_left     &kp DOWN      &kp UP        &vim_right    &kp LC(RIGHT)
             //╭─────────────┬───────────────┼─────────────┼─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┬─────────────╮
-                ______        &kp LC(Z)       ______        ______        ______        ______          ______        ______        ______        ______        &kp LC(R)       ______
+                ______       ______           ______        ______        ______        ______          ______        ______        ______        ______        ______        ______ 
             //╰─────────────┬───────────────┼─────────────┴─────────────┼─────────────┼─────────────┤ ├─────────────┼─────────────┼─────────────┴─────────────┴─────────────┴─────────────╯             
                                                             ______        ______        ______          ______        ______        ______
             //                                            ╰─────────────┴─────────────┴─────────────╯ ╰─────────────┴─────────────┴─────────────╯
