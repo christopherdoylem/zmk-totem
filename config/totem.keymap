@@ -28,7 +28,6 @@
 #define slashP &th LS(SLASH) P
 #define HYPEReturn &tb LS(LC(LA(LGUI))) RETURN
 #define MehSpace &tb LS(LC(LALT)) SPACE
-#define BackVim &tc 5 BACKSPACE
 
 // Combos//
 / {
