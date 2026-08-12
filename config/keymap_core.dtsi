@@ -1,0 +1,256 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+//  keymap_core.dtsi -- ONE keymap, shared by klor / corne / draculad / totem.
+//
+//  Nothing in this file knows what board it is on. Every key position number
+//  lives in layout_<board>.dtsi, generated from that board's matrix_transform.
+//  This file only ever refers to positions by name (POS_*, KEYS_L, KEYS_R).
+//
+//  Canonical grid -- 36 keys every board has, plus 10 optional slots:
+//
+//      o1l  l1  l2  l3  l4  l5              r1  r2  r3  r4  r5   o1r
+//      o2l  l6  l7  l8  l9 l10              r6  r7  r8  r9 r10   o2r
+//      o3l l11 l12 l13 l14 l15  midl midr  r11 r12 r13 r14 r15   o3r
+//                  lt1 lt2 lt3  t4l   t4r  rt1 rt2 rt3
+//
+//  Which optional slots each board has:
+//      klor  (44)  o2*  o3*  mid*  t4*
+//      corne (42)  o1*  o2*  o3*
+//      totem (38)       o3*
+//      dracu (38)            mid*
+//  A board's LAYOUT() silently drops the slots it lacks, so this file can
+//  always specify all 46.
+//
+//  Feature flags a board may define: HAS_ENCODER, HAS_OUTER_R3, HAS_GAMING
+// ═══════════════════════════════════════════════════════════════════════════════
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/behaviors.h>
+
+#define BASE   0
+#define LOWER  1
+#define RAISE  2
+#define NAV    3
+#define GAMING 4
+
+#define ___ &trans
+#define XXX &none
+
+#define slashP     &th LS(SLASH) P
+#define HYPEReturn &tb LS(LC(LA(LGUI))) RETURN
+#define MehSpace   &tb LS(LC(LALT)) SPACE
+
+// Boards with an outer row-3 key put COMMA there, so the middle of row 3 can be
+// a plain period. Boards without it need both on one key, hence the morph.
+#ifdef HAS_OUTER_R3
+  #define KEY_DOT &kp PERIOD
+#else
+  #define KEY_DOT &comma_morph
+#endif
+
+// Only reference the gaming layer on boards that actually define it.
+#ifdef HAS_GAMING
+  #define KEY_GAME &tog GAMING
+#else
+  #define KEY_GAME ___
+#endif
+
+/ {
+    combos {
+        compatible = "zmk,combos";
+
+        // Symbol combos -- base layer only. On LOWER these positions are
+        // digits; without the layers property, typing "123" fires
+        // ctrl_backspace.
+        combo_enter       { timeout-ms = <40>; bindings = <&kp RETURN>;            key-positions = <POS_R7 POS_R8 POS_R9>;   layers = <BASE>; };
+        combo_colon       { timeout-ms = <40>; bindings = <&kp SEMI>;              key-positions = <POS_R9 POS_R10>;         layers = <BASE>; };
+        combo_angle       { timeout-ms = <40>; bindings = <&angle_morph>;          key-positions = <POS_R7 POS_R9>;          layers = <BASE>; };
+        left_bracket      { timeout-ms = <40>; bindings = <&kp LEFT_BRACKET>;      key-positions = <POS_R7 POS_R8>;          layers = <BASE>; };
+        right_bracket     { timeout-ms = <40>; bindings = <&kp RIGHT_BRACKET>;     key-positions = <POS_R8 POS_R9>;          layers = <BASE>; };
+        left_parenthesis  { timeout-ms = <40>; bindings = <&kp LEFT_PARENTHESIS>;  key-positions = <POS_R2 POS_R3>;          layers = <BASE>; };
+        right_parenthesis { timeout-ms = <40>; bindings = <&kp RIGHT_PARENTHESIS>; key-positions = <POS_R3 POS_R4>;          layers = <BASE>; };
+        left_brace        { timeout-ms = <40>; bindings = <&kp LEFT_BRACE>;        key-positions = <POS_R12 POS_R13>;        layers = <BASE>; };
+        right_brace       { timeout-ms = <40>; bindings = <&kp RIGHT_BRACE>;       key-positions = <POS_R13 POS_R14>;        layers = <BASE>; };
+
+        // Editing combos -- wanted everywhere except GAMING.
+        ctrl_backspace    { timeout-ms = <40>; bindings = <&kp LC(BACKSPACE)>;     key-positions = <POS_R12 POS_R13 POS_R14>; layers = <BASE RAISE NAV>; };
+        combo_escape      { timeout-ms = <40>; bindings = <&kp ESCAPE>;            key-positions = <POS_L2 POS_L3>;           layers = <BASE LOWER RAISE NAV>; };
+        combo_tab         { timeout-ms = <40>; bindings = <&kp TAB>;               key-positions = <POS_L3 POS_L4>;           layers = <BASE LOWER RAISE NAV>; };
+    };
+
+    behaviors {
+        // KEYS_R / KEYS_L come from the board's transform, so these can never
+        // drift out of sync with the physical layout the way a hand-copied
+        // position list does.
+        HML: HML {
+            compatible = "zmk,behavior-hold-tap";
+            display-name = "HML";
+            #binding-cells = <2>;
+            bindings = <&kp>, <&kp>;
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            flavor = "balanced";
+            hold-trigger-on-release;
+            hold-trigger-key-positions = <KEYS_R>;
+        };
+
+        HMR: HMR {
+            compatible = "zmk,behavior-hold-tap";
+            display-name = "HMR";
+            #binding-cells = <2>;
+            bindings = <&kp>, <&kp>;
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            flavor = "balanced";
+            hold-trigger-on-release;
+            hold-trigger-key-positions = <KEYS_L>;
+        };
+
+        th: th {
+            compatible = "zmk,behavior-hold-tap";
+            display-name = "Taphold";
+            #binding-cells = <2>;
+            bindings = <&kp>, <&kp>;
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            flavor = "tap-preferred";
+        };
+
+        tb: tb {
+            compatible = "zmk,behavior-hold-tap";
+            display-name = "Thumb hold";
+            #binding-cells = <2>;
+            bindings = <&kp>, <&kp>;
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            flavor = "tap-preferred";
+        };
+
+        angle_morph: angle_morph {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp LT>, <&kp GT>;
+            mods = <(MOD_LSFT | MOD_RSFT)>;
+        };
+
+        comma_morph: comma_morph {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp COMMA>, <&kp DOT>;
+            mods = <(MOD_LSFT | MOD_RSFT)>;
+        };
+
+        ltl: ltl {
+            compatible = "zmk,behavior-hold-tap";
+            display-name = "LTL";
+            #binding-cells = <2>;
+            bindings = <&mo>, <&kp>;
+            tapping-term-ms = <200>;
+            quick-tap-ms = <175>;
+            flavor = "balanced";
+        };
+
+#ifdef HAS_GAMING
+        GamRT: GamRT { compatible = "zmk,behavior-mod-morph"; #binding-cells = <0>;
+                       bindings = <&kp R>, <&kp T>; mods = <(MOD_LSFT | MOD_RSFT)>; };
+        GamFG: GamFG { compatible = "zmk,behavior-mod-morph"; #binding-cells = <0>;
+                       bindings = <&kp F>, <&kp G>; mods = <(MOD_LSFT | MOD_RSFT)>; };
+        GamVB: GamVB { compatible = "zmk,behavior-mod-morph"; #binding-cells = <0>;
+                       bindings = <&kp V>, <&kp B>; mods = <(MOD_LSFT | MOD_RSFT)>; };
+        GamEI: GamEI { compatible = "zmk,behavior-mod-morph"; #binding-cells = <0>;
+                       bindings = <&kp E>, <&kp I>; mods = <(MOD_LSFT | MOD_RSFT)>; };
+#endif
+    };
+
+// Every layer is one LAYOUT() call: 36 core keys, then the 10 optional slots.
+// Boards that lack a slot drop it; nothing here needs an #ifdef.
+
+#define L_BASE LAYOUT(                                                        \
+    &kp B,       &kp L,            &kp D,        &HML LGUI W,  &kp Z,             \
+    &kp SQT,     &HMR LGUI F,      &kp O,        &kp U,        &kp J,             \
+    &lt RAISE N,   &HML LCTRL R,   &HML LALT T,  &lt NAV S,    &kp G,             \
+    &kp Y,       &lt NAV H,        &HMR LALT A,  &HMR LCTRL E, &lt RAISE I,       \
+    &kp Q,       &kp X,            &kp M,        &kp C,        &kp V,             \
+    &kp K,       slashP,           KEY_DOT,      &kp MINUS,    &kp SLASH,         \
+    &mo LOWER,   &ltl LOWER BSPC,  &kp LSHFT,    HYPEReturn,   MehSpace, &mo RAISE, \
+    XXX,         XXX,              &kp TAB,      &kp ESC,                         \
+    KEY_GAME,    &kp COMMA,        &kp C_MUTE,   &kp C_PP,     &kp LGUI, &kp RGUI)
+
+#define L_LOWER LAYOUT(                                                       \
+    ___,         &kp AMPS,     &kp STAR,     ___,          ___,               \
+    ___,         &kp N7,       &kp N8,       &kp N9,       &kp N0,            \
+    &kp ESC,     &kp DLLR,     &kp PRCNT,    &kp CARET,    ___,               \
+    ___,         &kp N4,       &kp N5,       &kp N6,       ___,               \
+    ___,         &kp EXCL,     &kp AT,       &kp HASH,     ___,               \
+    ___,         &kp N1,       &kp N2,       &kp N3,       ___,               \
+    ___,         ___,          ___,          ___,          ___,      ___,     \
+    ___,         ___,          ___,          ___,                             \
+    ___,         ___,          ___,          ___,          ___,      ___)
+
+#define L_RAISE LAYOUT(                                                       \
+    ___,         ___,          ___,          ___,          ___,               \
+    &kp F12,     &kp F7,       &kp F8,       &kp F9,       &kp TILDE,         \
+    &kp ESC,     ___,          &kp MINUS,    &kp EQUAL,    &kp TILDE,         \
+    &kp F11,     &kp F4,       &kp F5,       &kp F6,       &kp BSLH,          \
+    ___,         ___,          &kp UNDER,    &kp PLUS,     &kp GRAVE,         \
+    &kp F10,     &kp F1,       &kp F2,       &kp F3,       &kp PIPE,          \
+    ___,         ___,          ___,          ___,          ___,      ___,     \
+    ___,         ___,          ___,          &none,                           \
+    ___,         &kp GRAVE,    ___,          ___,          ___,      ___)
+
+#define L_NAV LAYOUT(                                                         \
+    ___,         &kp LC(TAB),  &kp DEL,      &kp C_MUTE,   &bt BT_NXT,        \
+    &trans,      &kp LC(C),    &trans,       &kp LC(V),    ___,               \
+    &kp ESC,     &kp TAB,      ___,          &kp C_VOL_UP, ___,               \
+    &kp LEFT,    &kp DOWN,     &kp UP,       &kp RIGHT,     &kp LC(EQUAL),     \
+    ___,         ___,          ___,          &kp C_VOL_DN, &bt BT_CLR,        \
+    ___,         &kp PG_DN,    &kp CAPS,     &kp PG_UP,    &kp LC(MINUS),     \
+    ___,         ___,          ___,          ___,          ___,      ___,     \
+    ___,         ___,          ___,          ___,                             \
+    ___,         ___,          ___,          ___,          ___,      ___)
+
+#ifdef HAS_GAMING
+#define L_GAMING LAYOUT(                                                      \
+    &kp TAB,     &kp Q,        &kp W,        &GamEI,       &GamRT,            \
+    ___,         ___,          ___,          ___,          ___,               \
+    &kp LCTL,    &kp A,        &kp S,        &kp D,        &GamFG,            \
+    ___,         ___,          ___,          ___,          ___,               \
+    &kp LALT,    &kp Z,        &kp X,        &kp C,        &GamVB,            \
+    ___,         ___,          ___,          ___,          ___,               \
+    ___,         &kp ENTER,    &kp SPACE,    ___,          ___,      ___,     \
+    ___,         ___,          ___,          ___,                             \
+    &tog GAMING, ___,          ___,          ___,          ___,      ___)
+#endif
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        base_layer  { display-name = "Base";  bindings = <L_BASE>;
+#ifdef HAS_ENCODER
+                      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+#endif
+        };
+        lower_layer { display-name = "Lower"; bindings = <L_LOWER>;
+#ifdef HAS_ENCODER
+                      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+#endif
+        };
+        raise_layer { display-name = "Raise"; bindings = <L_RAISE>;
+#ifdef HAS_ENCODER
+                      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+#endif
+        };
+        nav_layer   { display-name = "Nav";   bindings = <L_NAV>;
+#ifdef HAS_ENCODER
+                      sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+#endif
+        };
+#ifdef HAS_GAMING
+        gaming_layer { display-name = "Gaming"; bindings = <L_GAMING>; };
+#endif
+    };
+};
