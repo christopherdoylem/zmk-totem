@@ -1,5 +1,6 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-//  keymap_core.dtsi -- ONE keymap, shared by klor / corne / draculad / totem.
+//  keymap_core.dtsi -- ONE keymap, shared by all seven keyboards:
+//  klor / konrad / saegewerk / corne / draculad / totem / sweep.
 //
 //  Nothing in this file knows what board it is on. Every key position number
 //  lives in layout_<board>.dtsi, generated from that board's matrix_transform.
@@ -13,10 +14,12 @@
 //                  lt1 lt2 lt3  t4l   t4r  rt1 rt2 rt3
 //
 //  Which optional slots each board has:
-//      klor  (44)  o2*  o3*  mid*  t4*
-//      corne (42)  o1*  o2*  o3*
-//      totem (38)       o3*
-//      dracu (38)            mid*
+//      klor/konrad (44)  o2*  o3*  mid*  t4*
+//      corne       (42)  o1*  o2*  o3*
+//      totem       (38)       o3*
+//      dracu       (38)            mid*
+//      saegewerk   (36)  -- mirrored, see layout_saegewerk.dtsi
+//      sweep       (34)
 //  A board's LAYOUT() silently drops the slots it lacks, so this file can
 //  always specify all 46.
 //
