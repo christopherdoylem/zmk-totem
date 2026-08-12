@@ -31,20 +31,22 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/behaviors.h>
+#include <dt-bindings/zmk/outputs.h>
 
 #define BASE   0
 #define LOWER  1
 #define RAISE  2
 #define NAV    3
-#define GAMING 4
+#define SYS    4
+#define GAMING 5
 
 // QWERTY sits after gaming when a board has both, and takes gaming's place
 // when it doesn't -- ZMK numbers layers by the order they appear, with no
 // gaps, so the number has to follow whichever optional layers came before.
 #ifdef HAS_GAMING
-  #define QWERTY 5
+  #define QWERTY 6
 #else
-  #define QWERTY 4
+  #define QWERTY 5
 #endif
 
 #define ___ &trans
@@ -262,6 +264,22 @@
     ___,         ___,          ___,          ___,                             \
     ___,         ___,          ___,          ___,          ___,      ___)
 
+// Summoned by holding LOWER and RAISE together, so it costs no key. Left hand
+// only: on the sweep, reaching RAISE uses the right index, and keeping every
+// system key on one hand means the same chord and the same keys on all seven.
+// Everything else is XXX rather than transparent, so a stray press while the
+// chord is held does nothing instead of typing a letter.
+#define L_SYS LAYOUT(                                                         \
+    &bt BT_SEL 0, &bt BT_SEL 1, &bt BT_SEL 2, &bt BT_SEL 3, &bt BT_CLR,       \
+    XXX,          XXX,          XXX,          XXX,          XXX,              \
+    XXX,          XXX,          XXX,          XXX,          XXX,              \
+    XXX,          XXX,          XXX,          XXX,          XXX,              \
+    &bootloader,  &sys_reset,   XXX,          &out OUT_TOG, XXX,              \
+    XXX,          XXX,          XXX,          XXX,          XXX,              \
+    XXX,         XXX,         XXX,         XXX,         XXX,         XXX,     \
+    XXX,          XXX,          XXX,          XXX,                            \
+    XXX,         XXX,         XXX,         XXX,         XXX,         XXX)
+
 #ifdef HAS_GAMING
 #define L_GAMING LAYOUT(                                                      \
     &kp TAB,     &kp Q,        &kp W,        &GamEI,       &GamRT,            \
@@ -292,6 +310,14 @@
     &kp RGUI)
 #endif
 
+    // Holding LOWER and RAISE at once brings up SYS. That is the only way in:
+    // no key on any layer switches to it, which is what keeps it out of the way
+    // until it is wanted.
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        sys { if-layers = <LOWER RAISE>; then-layer = <SYS>; };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
@@ -307,6 +333,9 @@
         nav_layer   { display-name = "Nav";   bindings = <L_NAV>;
                       ENCODERS
         };
+        // Must sit here, before the optional layers: ZMK numbers layers by the
+        // order they appear, and SYS is defined as 4.
+        sys_layer   { display-name = "Sys";   bindings = <L_SYS>; };
 #ifdef HAS_GAMING
         gaming_layer { display-name = "Gaming"; bindings = <L_GAMING>; };
 #endif
