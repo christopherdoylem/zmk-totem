@@ -1,3 +1,5 @@
 // totem -- all content lives in keymap_core.dtsi, shared by every board.
+// This is the Mac keyboard: copy, paste and zoom come out as Command.
+#define IS_MAC
 #include "layout_totem.dtsi"
 #include "keymap_core.dtsi"
