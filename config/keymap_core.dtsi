@@ -34,6 +34,15 @@
 #define NAV    3
 #define GAMING 4
 
+// QWERTY sits after gaming when a board has both, and takes gaming's place
+// when it doesn't -- ZMK numbers layers by the order they appear, with no
+// gaps, so the number has to follow whichever optional layers came before.
+#ifdef HAS_GAMING
+  #define QWERTY 5
+#else
+  #define QWERTY 4
+#endif
+
 #define ___ &trans
 #define XXX &none
 
@@ -49,9 +58,13 @@
   #define KEY_DOT &comma_morph
 #endif
 
-// Only reference the gaming layer on boards that actually define it.
+// The outer row-3 key toggles whichever alternate layer this board has. Only
+// reference a layer on boards that actually define it -- naming a layer that
+// isn't there will not compile.
 #ifdef HAS_GAMING
   #define KEY_GAME &tog GAMING
+#elif defined(HAS_QWERTY)
+  #define KEY_GAME &tog QWERTY
 #else
   #define KEY_GAME ___
 #endif
@@ -226,6 +239,23 @@
     &tog GAMING, ___,          ___,          ___,          ___,      ___)
 #endif
 
+// A plain QWERTY layer, for a board that wants ordinary letter positions
+// available without giving up the main layout. Homerow mods and the layer
+// keys stay, so it behaves like the base layer with different letters on it.
+#ifdef HAS_QWERTY
+#define L_QWERTY LAYOUT(                                                      \
+    &kp Q,       &kp W,        &kp E,        &HML LGUI R,  &kp T,             \
+    &kp Y,       &HMR LGUI U,  &kp I,        &kp O,        &kp P,             \
+    &lt RAISE A, &HML LCTRL S, &HML LALT D,  &lt NAV F,    &kp G,             \
+    &kp H,       &lt NAV J,    &HMR LALT K,  &HMR LCTRL L, &lt RAISE SEMI,    \
+    &kp Z,       &kp X,        &kp C,        &kp V,        &kp B,             \
+    &kp N,       &kp M,        &kp COMMA,    &kp PERIOD,   &kp SLASH,         \
+    &mo LOWER,   &kp BSPC,     &kp LSHFT,    HYPEReturn,   MehSpace,          \
+    &mo RAISE,   XXX,          XXX,          &kp TAB,      &kp ESC,           \
+    &tog QWERTY, &kp COMMA,    &kp C_MUTE,   &kp C_PP,     &kp LGUI,          \
+    &kp RGUI)
+#endif
+
     keymap {
         compatible = "zmk,keymap";
 
@@ -251,6 +281,13 @@
         };
 #ifdef HAS_GAMING
         gaming_layer { display-name = "Gaming"; bindings = <L_GAMING>; };
+#endif
+#ifdef HAS_QWERTY
+        qwerty_layer { display-name = "Qwerty"; bindings = <L_QWERTY>;
+#ifdef HAS_ENCODER
+                       sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+#endif
+        };
 #endif
     };
 };
