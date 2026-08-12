@@ -105,20 +105,27 @@
         // Symbol combos -- base layer only. On LOWER these positions are
         // digits; without the layers property, typing "123" fires
         // ctrl_backspace.
-        combo_enter       { timeout-ms = <40>; bindings = <&kp RETURN>;            key-positions = <POS_R7 POS_R8 POS_R9>;   layers = <BASE>; };
-        combo_colon       { timeout-ms = <40>; bindings = <&kp SEMI>;              key-positions = <POS_R9 POS_R10>;         layers = <BASE>; };
-        combo_angle       { timeout-ms = <40>; bindings = <&angle_morph>;          key-positions = <POS_R7 POS_R9>;          layers = <BASE>; };
-        left_bracket      { timeout-ms = <40>; bindings = <&kp LEFT_BRACKET>;      key-positions = <POS_R7 POS_R8>;          layers = <BASE>; };
-        right_bracket     { timeout-ms = <40>; bindings = <&kp RIGHT_BRACKET>;     key-positions = <POS_R8 POS_R9>;          layers = <BASE>; };
-        left_parenthesis  { timeout-ms = <40>; bindings = <&kp LEFT_PARENTHESIS>;  key-positions = <POS_R2 POS_R3>;          layers = <BASE>; };
-        right_parenthesis { timeout-ms = <40>; bindings = <&kp RIGHT_PARENTHESIS>; key-positions = <POS_R3 POS_R4>;          layers = <BASE>; };
-        left_brace        { timeout-ms = <40>; bindings = <&kp LEFT_BRACE>;        key-positions = <POS_R12 POS_R13>;        layers = <BASE>; };
-        right_brace       { timeout-ms = <40>; bindings = <&kp RIGHT_BRACE>;       key-positions = <POS_R13 POS_R14>;        layers = <BASE>; };
+        combo_enter       { timeout-ms = <40>; bindings = <&kp RETURN>;            key-positions = <POS_R7 POS_R8 POS_R9>;   layers = <BASE>; require-prior-idle-ms = <150>; };
+        combo_colon       { timeout-ms = <40>; bindings = <&kp SEMI>;              key-positions = <POS_R9 POS_R10>;         layers = <BASE>; require-prior-idle-ms = <150>; };
+        combo_angle       { timeout-ms = <40>; bindings = <&angle_morph>;          key-positions = <POS_R7 POS_R9>;          layers = <BASE>; require-prior-idle-ms = <150>; };
+        left_bracket      { timeout-ms = <40>; bindings = <&kp LEFT_BRACKET>;      key-positions = <POS_R7 POS_R8>;          layers = <BASE>; require-prior-idle-ms = <150>; };
+        right_bracket     { timeout-ms = <40>; bindings = <&kp RIGHT_BRACKET>;     key-positions = <POS_R8 POS_R9>;          layers = <BASE>; require-prior-idle-ms = <150>; };
+        left_parenthesis  { timeout-ms = <40>; bindings = <&kp LEFT_PARENTHESIS>;  key-positions = <POS_R2 POS_R3>;          layers = <BASE>; require-prior-idle-ms = <150>; };
+        right_parenthesis { timeout-ms = <40>; bindings = <&kp RIGHT_PARENTHESIS>; key-positions = <POS_R3 POS_R4>;          layers = <BASE>; require-prior-idle-ms = <150>; };
+        left_brace        { timeout-ms = <40>; bindings = <&kp LEFT_BRACE>;        key-positions = <POS_R12 POS_R13>;        layers = <BASE>; require-prior-idle-ms = <150>; };
+        right_brace       { timeout-ms = <40>; bindings = <&kp RIGHT_BRACE>;       key-positions = <POS_R13 POS_R14>;        layers = <BASE>; require-prior-idle-ms = <150>; };
 
         // Editing combos -- wanted everywhere except GAMING.
         ctrl_backspace    { timeout-ms = <40>; bindings = <&kp LC(BACKSPACE)>;     key-positions = <POS_R12 POS_R13 POS_R14>; layers = <BASE RAISE NAV>; };
         combo_escape      { timeout-ms = <40>; bindings = <&kp ESCAPE>;            key-positions = <POS_L2 POS_L3>;           layers = <BASE LOWER RAISE NAV>; };
         combo_tab         { timeout-ms = <40>; bindings = <&kp TAB>;               key-positions = <POS_L3 POS_L4>;           layers = <BASE LOWER RAISE NAV>; };
+        // Cut, copy and paste on the left hand, so they still work with the
+        // mouse in your right. Base layer only: these keys are symbols on
+        // LOWER and RAISE, and Z X C on GAMING, where pressing two together is
+        // just playing. CMD() so the totem gets Command and the rest Ctrl.
+        combo_cut         { timeout-ms = <40>; bindings = <&kp CMD(X)>;            key-positions = <POS_L12 POS_L13>;         layers = <BASE>; };
+        combo_copy        { timeout-ms = <40>; bindings = <&kp CMD(C)>;            key-positions = <POS_L13 POS_L14>;         layers = <BASE>; };
+        combo_paste       { timeout-ms = <40>; bindings = <&kp CMD(V)>;            key-positions = <POS_L14 POS_L15>;         layers = <BASE>; };
     };
 
     behaviors {
@@ -220,7 +227,7 @@
     &kp K,       slashP,           KEY_DOT,      &kp MINUS,    &kp SLASH,         \
     &mo LOWER,   &ltl LOWER BSPC,  &kp LSHFT,    HYPEReturn,   MehSpace, &mo RAISE, \
     XXX,         XXX,              &kp TAB,      &kp ESC,                         \
-    KEY_GAME,    &kp COMMA,        &kp C_MUTE,   &kp C_PP,     &kp LGUI, &kp RGUI)
+    KEY_GAME,    &kp COMMA,        &kp C_MUTE,   &kp C_PP,     &none,    &none)
 
 #define L_LOWER LAYOUT(                                                       \
     ___,         &kp AMPS,     &kp STAR,     ___,          ___,               \
