@@ -289,18 +289,23 @@
     ___,         ___,          ___,          ___,                             \
     ___,         ___,          ___,          ___,          ___,      ___)
 
-// Summoned by holding LOWER and RAISE together, so it costs no key. Left hand
-// only: on the sweep, reaching RAISE uses the right index, and keeping every
-// system key on one hand means the same chord and the same keys on all seven.
+// Summoned by holding LOWER and RAISE together, so it costs no key. Nearly all
+// left hand: on the sweep, reaching RAISE uses the right index, and keeping the
+// system keys on one hand means the same chord and the same keys on all seven.
 // Everything else is XXX rather than transparent, so a stray press while the
 // chord is held does nothing instead of typing a letter.
+//
+// The exception is the second bootloader, mirrored onto the right hand. It has
+// to be: &bootloader resets the half the key is physically on, so one key can
+// only ever put one half into bootloader mode, and the right half would
+// otherwise still need the button on the board pressed by hand.
 #define L_SYS LAYOUT(                                                         \
     &bt BT_SEL 0, &bt BT_SEL 1, &bt BT_SEL 2, &bt BT_SEL 3, &bt BT_CLR,       \
     XXX,          XXX,          XXX,          XXX,          XXX,              \
     XXX,          XXX,          XXX,          XXX,          XXX,              \
     XXX,          XXX,          XXX,          XXX,          XXX,              \
     &bootloader,  &sys_reset,   XXX,          &out OUT_TOG, XXX,              \
-    XXX,          XXX,          XXX,          XXX,          XXX,              \
+    XXX,          XXX,          XXX,          XXX,          &bootloader,      \
     XXX,         XXX,         XXX,         XXX,         XXX,         XXX,     \
     XXX,          XXX,          XXX,          XXX,                            \
     XXX,         XXX,         XXX,         XXX,         XXX,         XXX)
