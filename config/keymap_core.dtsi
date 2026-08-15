@@ -73,6 +73,16 @@
   #define CMD(key) LC(key)
 #endif
 
+// Delete the word to the left. A Mac wants Option+Backspace for this;
+// Ctrl+Backspace does nothing there. Everywhere else it is Ctrl+Backspace.
+// Holds the whole binding, not just the keycode, because that is what every
+// other shorthand here does and what keymap-forge expects to be able to edit.
+#ifdef IS_MAC
+  #define DEL_WORD &kp LA(BACKSPACE)
+#else
+  #define DEL_WORD &kp LC(BACKSPACE)
+#endif
+
 // What the knobs do. A board with two gets volume on one and page up/down on
 // the other; which knob is which depends on whether the board is mirrored,
 // because on a mirrored board the half the firmware calls "left" is the half
@@ -100,6 +110,21 @@
   #define KEY_GAME ___
 #endif
 
+// Leave the keys listening while the rest of the keyboard sleeps, so pressing
+// one starts it up again. A keyboard without this can only be revived by
+// plugging it in: it powers the key grid down along with everything else, and
+// nothing is left to notice you typing. Costs nothing while no key is held.
+//
+// This is a fact about the hardware rather than the keymap, and it belongs
+// here anyway: every board names its key grid kscan0, and this file is the one
+// thing all seven are given. Kept per board, it gets forgotten -- the konrad
+// went a month needing a cable every morning because it was (2026-08-14). The
+// draculad and totem also set it in their own shield files, harmlessly: it is
+// the same value written twice.
+&kscan0 {
+    wakeup-source;
+};
+
 / {
     combos {
         compatible = "zmk,combos";
@@ -118,7 +143,7 @@
         right_brace       { timeout-ms = <40>; bindings = <&kp RIGHT_BRACE>;       key-positions = <POS_R13 POS_R14>;        layers = <BASE>; require-prior-idle-ms = <150>; };
 
         // Editing combos -- wanted everywhere except GAMING.
-        ctrl_backspace    { timeout-ms = <40>; bindings = <&kp LC(BACKSPACE)>;     key-positions = <POS_R12 POS_R13 POS_R14>; layers = <BASE RAISE NAV>; };
+        ctrl_backspace    { timeout-ms = <40>; bindings = <DEL_WORD>;              key-positions = <POS_R12 POS_R13 POS_R14>; layers = <BASE RAISE NAV>; };
         combo_escape      { timeout-ms = <40>; bindings = <&kp ESCAPE>;            key-positions = <POS_L2 POS_L3>;           layers = <BASE LOWER RAISE NAV>; };
         combo_tab         { timeout-ms = <40>; bindings = <&kp TAB>;               key-positions = <POS_L3 POS_L4>;           layers = <BASE LOWER RAISE NAV>; };
         // Cut, copy and paste on the left hand, so they still work with the
@@ -255,7 +280,7 @@
 
 #define L_NAV LAYOUT(                                                         \
     ___,         &kp LC(TAB),  &kp DEL,      &kp C_MUTE,   &bt BT_NXT,        \
-    &trans,      &kp CMD(C),    &trans,       &kp CMD(V),    ___,               \
+    &trans,      &kp CMD(C),    ___,          &kp CMD(V),    ___,               \
     &kp ESC,     &kp TAB,      ___,          &kp C_VOL_UP, ___,               \
     &kp LEFT,    &kp DOWN,     &kp UP,       &kp RIGHT,     &kp CMD(EQUAL),     \
     ___,         ___,          ___,          &kp C_VOL_DN, &bt BT_CLR_ALL,    \
